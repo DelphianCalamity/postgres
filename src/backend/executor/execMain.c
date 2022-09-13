@@ -88,7 +88,8 @@ static void ExecutePlan(EState *estate, PlanState *planstate,
 						uint64 numberTuples,
 						ScanDirection direction,
 						DestReceiver *dest,
-						bool execute_once);
+						bool execute_once,
+						float *result);
 static bool ExecCheckRTEPerms(RangeTblEntry *rte);
 static bool ExecCheckRTEPermsModified(Oid relOid, Oid userid,
 									  Bitmapset *modifiedCols,
@@ -366,7 +367,8 @@ standard_ExecutorRun(QueryDesc *queryDesc,
 					count,
 					direction,
 					dest,
-					execute_once);
+					execute_once,
+					&queryDesc->result);
 	}
 
 	/*
@@ -1511,7 +1513,8 @@ ExecutePlan(EState *estate,
 			uint64 numberTuples,
 			ScanDirection direction,
 			DestReceiver *dest,
-			bool execute_once)
+			bool execute_once,
+			float *result)
 {
 	TupleTableSlot *slot;
 	uint64		current_tuple_count;
@@ -1581,6 +1584,12 @@ ExecutePlan(EState *estate,
 			 */
 			if (!dest->receiveSlot(slot, dest))
 				break;
+			else
+			{	// Temporary hack to make the result visible to the ExecutorFinish Hook.
+				// It assumes that the result will be a single value.
+				// Todo: Change to accommodate other types etc
+				*result = slot->tts_values[0];
+			}
 		}
 
 		/*
