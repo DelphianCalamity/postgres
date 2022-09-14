@@ -26,10 +26,6 @@ extern Node *transformLimitClause(ParseState *pstate, Node *clause,
 								  ParseExprKind exprKind, const char *constructName,
 								  LimitOption limitOption);
 
-extern Node *
-transformUsingIdClause(ParseState *pstate, Node *clause,
-					 ParseExprKind exprKind, const char *constructName);
-
 extern List *transformGroupClause(ParseState *pstate, List *grouplist,
 								  List **groupingSets,
 								  List **targetlist, List *sortClause,

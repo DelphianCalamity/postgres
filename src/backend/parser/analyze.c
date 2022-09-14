@@ -126,8 +126,8 @@ parse_analyze(RawStmt *parseTree, const char *sourceText,
 
 	query = transformTopLevelStmt(pstate, parseTree);
 
-	if (IsQueryIdEnabled())
-		jstate = JumbleQuery(query, sourceText);
+	// if (IsQueryIdEnabled())
+	// 	jstate = JumbleQuery(query, sourceText);
 
 	if (post_parse_analyze_hook)
 		(*post_parse_analyze_hook) (pstate, query, jstate);
@@ -1242,6 +1242,7 @@ transformSelectStmt(ParseState *pstate, SelectStmt *stmt)
 	Node	   *qual;
 	ListCell   *l;
 
+
 	qry->commandType = CMD_SELECT;
 
 	/* process the WITH clause independently of all else */
@@ -1284,9 +1285,16 @@ transformSelectStmt(ParseState *pstate, SelectStmt *stmt)
 	qry->havingQual = transformWhereClause(pstate, stmt->havingClause,
 										   EXPR_KIND_HAVING, "HAVING");
 
-	qry->usingIdClause = transformUsingIdClause(pstate, stmt->usingIdClause,
-										   EXPR_KIND_HAVING, "HAVING");
+	qry->customQueryId = 0;
+	if (stmt->usingIdClause != NULL)
+	{	
+		A_Const *con = (A_Const *) stmt->usingIdClause;
+		Value *val = &con->val;
+		qry->customQueryId = val->val.ival;
+	}
 
+	
+										   
 	/*
 	 * Transform sorting/grouping stuff.  Do ORDER BY first because both
 	 * transformGroupClause and transformDistinctClause need the results. Note

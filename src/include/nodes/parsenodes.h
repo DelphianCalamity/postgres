@@ -162,7 +162,7 @@ typedef struct Query
 
 	Node	   *havingQual;		/* qualifications applied to groups */
 
-	Node	   *usingIdClause;
+	int		   customQueryId;
 
 	List	   *windowClause;	/* a list of WindowClause's */
 

@@ -2384,9 +2384,8 @@ query_tree_walker(Query *query,
 		return true;
 	if (walker(query->limitCount, context))
 		return true;
-	if (walker(query->usingIdClause, context))
-		return true;
-
+	// if (walker(query->usingIdClause, context))
+	// 	return true;
 	/*
 	 * Most callers aren't interested in SortGroupClause nodes since those
 	 * don't contain actual expressions. However they do contain OIDs which

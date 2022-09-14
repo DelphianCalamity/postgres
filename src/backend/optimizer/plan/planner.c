@@ -505,6 +505,7 @@ standard_planner(Query *parse, const char *query_string, int cursorOptions,
 
 	result->commandType = parse->commandType;
 	result->queryId = parse->queryId;
+	result->customQueryId = parse->customQueryId;
 	result->hasReturning = (parse->returningList != NIL);
 	result->hasModifyingCTE = parse->hasModifyingCTE;
 	result->canSetTag = parse->canSetTag;
@@ -805,11 +806,6 @@ subquery_planner(PlannerGlobal *glob, Query *parse,
 
 	parse->havingQual = preprocess_expression(root, parse->havingQual,
 											  EXPRKIND_QUAL);
-	
-	parse->usingIdClause = preprocess_expression(root, parse->usingIdClause,
-											  EXPRKIND_QUAL);
-
-
 	foreach(l, parse->windowClause)
 	{
 		WindowClause *wc = lfirst_node(WindowClause, l);
