@@ -161,6 +161,8 @@ typedef struct Query
 	List	   *groupingSets;	/* a list of GroupingSet's if present */
 
 	Node	   *havingQual;		/* qualifications applied to groups */
+	Node 	   *usingIdClause;
+	Node	   *usingBudgetClause;
 
 	List	   *windowClause;	/* a list of WindowClause's */
 
@@ -1652,6 +1654,9 @@ typedef struct SelectStmt
 	List	   *groupClause;	/* GROUP BY clauses */
 	bool		groupDistinct;	/* Is this GROUP BY DISTINCT? */
 	Node	   *havingClause;	/* HAVING conditional-expression */
+	Node	   *usingIdClause;	/* USING_ID conditional-expression */
+	Node	   *usingBudgetClause;	/* USING_BUDGET conditional-expression */
+
 	List	   *windowClause;	/* WINDOW window_name AS (...), ... */
 
 	/*

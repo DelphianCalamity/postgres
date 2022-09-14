@@ -3272,6 +3272,8 @@ _copySelectStmt(const SelectStmt *from)
 	COPY_SCALAR_FIELD(groupDistinct);
 	COPY_NODE_FIELD(havingClause);
 	COPY_NODE_FIELD(windowClause);
+	COPY_NODE_FIELD(usingIdClause);
+	COPY_NODE_FIELD(usingBudgetClause);
 	COPY_NODE_FIELD(valuesLists);
 	COPY_NODE_FIELD(sortClause);
 	COPY_NODE_FIELD(limitOffset);
