@@ -3707,6 +3707,10 @@ raw_expression_tree_walker(Node *node,
 					return true;
 				if (walker(stmt->havingClause, context))
 					return true;
+				if (walker(stmt->usingIdClause, context))
+					return true;
+				if (walker(stmt->usingBudgetClause, context))
+					return true;
 				if (walker(stmt->windowClause, context))
 					return true;
 				if (walker(stmt->valuesLists, context))

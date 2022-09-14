@@ -22,6 +22,14 @@ extern int	setTargetTable(ParseState *pstate, RangeVar *relation,
 
 extern Node *transformWhereClause(ParseState *pstate, Node *clause,
 								  ParseExprKind exprKind, const char *constructName);
+
+extern Node *transformUsingIdClause(ParseState *pstate, Node *clause,
+								  ParseExprKind exprKind, const char *constructName);
+
+extern Node *transformUsingBudgetClause(ParseState *pstate, Node *clause,
+								  ParseExprKind exprKind, const char *constructName);
+
+
 extern Node *transformLimitClause(ParseState *pstate, Node *clause,
 								  ParseExprKind exprKind, const char *constructName,
 								  LimitOption limitOption);
