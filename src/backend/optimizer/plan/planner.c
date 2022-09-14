@@ -805,6 +805,10 @@ subquery_planner(PlannerGlobal *glob, Query *parse,
 
 	parse->havingQual = preprocess_expression(root, parse->havingQual,
 											  EXPRKIND_QUAL);
+	
+	parse->usingIdClause = preprocess_expression(root, parse->usingIdClause,
+											  EXPRKIND_QUAL);
+
 
 	foreach(l, parse->windowClause)
 	{

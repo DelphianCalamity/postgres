@@ -2384,6 +2384,8 @@ query_tree_walker(Query *query,
 		return true;
 	if (walker(query->limitCount, context))
 		return true;
+	if (walker(query->usingIdClause, context))
+		return true;
 
 	/*
 	 * Most callers aren't interested in SortGroupClause nodes since those
@@ -3724,6 +3726,8 @@ raw_expression_tree_walker(Node *node,
 				if (walker(stmt->larg, context))
 					return true;
 				if (walker(stmt->rarg, context))
+					return true;
+				if (walker(stmt->usingIdClause, context))
 					return true;
 			}
 			break;
