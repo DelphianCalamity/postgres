@@ -1750,6 +1750,24 @@ transformWhereClause(ParseState *pstate, Node *clause,
 	return qual;
 }
 
+Node *
+transformUsingIdClause(ParseState *pstate, Node *clause,
+					 ParseExprKind exprKind, const char *constructName)
+{
+	Node	   *qual;
+
+	if (clause == NULL)
+		return NULL;
+
+	qual = transformExpr(pstate, clause, exprKind);
+
+	qual = coerce_to_specific_type(pstate, qual, INT8OID, constructName);
+
+	checkExprIsVarFree(pstate, qual, constructName);
+
+	return qual;
+}
+
 
 /*
  * transformLimitClause -

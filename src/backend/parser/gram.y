@@ -497,7 +497,7 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 %type <node>	def_arg columnElem where_clause where_or_current_clause
 				a_expr b_expr c_expr AexprConst indirection_el opt_slice_bound
 				columnref in_expr having_clause func_table xmltable array_expr
-				OptWhereClause operator_def_arg
+				OptWhereClause operator_def_arg using_id_clause
 %type <list>	rowsfrom_item rowsfrom_list opt_col_def_list
 %type <boolean> opt_ordinality
 %type <list>	ExclusionConstraintList ExclusionConstraintElem
@@ -715,7 +715,7 @@ static Node *makeRecursiveViewSelect(char *relname, List *aliases, Node *query);
 	TRUNCATE TRUSTED TYPE_P TYPES_P
 
 	UESCAPE UNBOUNDED UNCOMMITTED UNENCRYPTED UNION UNIQUE UNKNOWN
-	UNLISTEN UNLOGGED UNTIL UPDATE USER USING
+	UNLISTEN UNLOGGED UNTIL UPDATE USER USING USING_ID
 
 	VACUUM VALID VALIDATE VALIDATOR VALUE_P VALUES VARCHAR VARIADIC VARYING
 	VERBOSE VERSION_P VIEW VIEWS VOLATILE
@@ -11439,7 +11439,7 @@ select_clause:
 simple_select:
 			SELECT opt_all_clause opt_target_list
 			into_clause from_clause where_clause
-			group_clause having_clause window_clause
+			group_clause having_clause window_clause using_id_clause
 				{
 					SelectStmt *n = makeNode(SelectStmt);
 					n->targetList = $3;
@@ -11450,11 +11450,12 @@ simple_select:
 					n->groupDistinct = ($7)->distinct;
 					n->havingClause = $8;
 					n->windowClause = $9;
+					n->usingIdClause = $10;
 					$$ = (Node *)n;
 				}
 			| SELECT distinct_clause target_list
 			into_clause from_clause where_clause
-			group_clause having_clause window_clause
+			group_clause having_clause window_clause using_id_clause
 				{
 					SelectStmt *n = makeNode(SelectStmt);
 					n->distinctClause = $2;
@@ -11466,6 +11467,7 @@ simple_select:
 					n->groupDistinct = ($7)->distinct;
 					n->havingClause = $8;
 					n->windowClause = $9;
+					n->usingIdClause = $10;
 					$$ = (Node *)n;
 				}
 			| values_clause							{ $$ = $1; }
@@ -11502,6 +11504,10 @@ simple_select:
 				}
 		;
 
+using_id_clause:
+			USING_ID a_expr							{ $$ = $2; }
+			| /*EMPTY*/								{ $$ = NULL; }
+		;
 /*
  * SQL standard WITH clause looks like:
  *
@@ -15345,7 +15351,7 @@ role_list:	RoleSpec
 PLpgSQL_Expr: opt_distinct_clause opt_target_list
 			from_clause where_clause
 			group_clause having_clause window_clause
-			opt_sort_clause opt_select_limit opt_for_locking_clause
+			opt_sort_clause opt_select_limit opt_for_locking_clause using_id_clause
 				{
 					SelectStmt *n = makeNode(SelectStmt);
 
@@ -15370,6 +15376,7 @@ PLpgSQL_Expr: opt_distinct_clause opt_target_list
 						n->limitOption = $9->limitOption;
 					}
 					n->lockingClause = $10;
+					n->usingIdClause = $11;
 					$$ = (Node *) n;
 				}
 		;
@@ -15954,6 +15961,7 @@ reserved_keyword:
 			| UNIQUE
 			| USER
 			| USING
+			| USING_ID
 			| VARIADIC
 			| WHEN
 			| WHERE

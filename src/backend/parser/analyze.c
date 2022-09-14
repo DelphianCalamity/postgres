@@ -1284,6 +1284,9 @@ transformSelectStmt(ParseState *pstate, SelectStmt *stmt)
 	qry->havingQual = transformWhereClause(pstate, stmt->havingClause,
 										   EXPR_KIND_HAVING, "HAVING");
 
+	qry->usingIdClause = transformUsingIdClause(pstate, stmt->usingIdClause,
+										   EXPR_KIND_HAVING, "HAVING");
+
 	/*
 	 * Transform sorting/grouping stuff.  Do ORDER BY first because both
 	 * transformGroupClause and transformDistinctClause need the results. Note
@@ -1403,6 +1406,7 @@ transformValuesClause(ParseState *pstate, SelectStmt *stmt)
 	Assert(stmt->whereClause == NULL);
 	Assert(stmt->groupClause == NIL);
 	Assert(stmt->havingClause == NULL);
+	Assert(stmt->usingIdClause == NULL);
 	Assert(stmt->windowClause == NIL);
 	Assert(stmt->op == SETOP_NONE);
 
