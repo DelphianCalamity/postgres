@@ -163,6 +163,7 @@ typedef struct Query
 	Node	   *havingQual;		/* qualifications applied to groups */
 
 	int		   customQueryId;
+	int	   	   privacyBudget;
 
 	List	   *windowClause;	/* a list of WindowClause's */
 
@@ -1655,7 +1656,7 @@ typedef struct SelectStmt
 	bool		groupDistinct;	/* Is this GROUP BY DISTINCT? */
 	Node	   *havingClause;	/* HAVING conditional-expression */
 	Node	   *usingIdClause;
-
+	Node	   *usingBudgetClause;
 	List	   *windowClause;	/* WINDOW window_name AS (...), ... */
 
 	/*

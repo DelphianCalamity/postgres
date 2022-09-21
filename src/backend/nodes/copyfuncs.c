@@ -3162,6 +3162,7 @@ _copyQuery(const Query *from)
 	COPY_SCALAR_FIELD(querySource);
 	COPY_SCALAR_FIELD(queryId);
 	COPY_SCALAR_FIELD(customQueryId);
+	COPY_SCALAR_FIELD(privacyBudget);
 	COPY_SCALAR_FIELD(canSetTag);
 	COPY_NODE_FIELD(utilityStmt);
 	COPY_SCALAR_FIELD(resultRelation);
@@ -3273,6 +3274,7 @@ _copySelectStmt(const SelectStmt *from)
 	COPY_SCALAR_FIELD(groupDistinct);
 	COPY_NODE_FIELD(havingClause);
 	COPY_NODE_FIELD(usingIdClause);
+	COPY_NODE_FIELD(usingBudgetClause);
 	COPY_NODE_FIELD(windowClause);
 	COPY_NODE_FIELD(valuesLists);
 	COPY_NODE_FIELD(sortClause);

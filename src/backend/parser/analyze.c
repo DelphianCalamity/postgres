@@ -1293,6 +1293,14 @@ transformSelectStmt(ParseState *pstate, SelectStmt *stmt)
 		qry->customQueryId = val->val.ival;
 	}
 
+	qry->privacyBudget = 0;
+	if (stmt->usingBudgetClause != NULL)
+	{	
+		A_Const *con = (A_Const *) stmt->usingBudgetClause;
+		Value *val = &con->val;
+		qry->privacyBudget = val->val.ival;
+	}
+
 	
 										   
 	/*
@@ -1415,6 +1423,7 @@ transformValuesClause(ParseState *pstate, SelectStmt *stmt)
 	Assert(stmt->groupClause == NIL);
 	Assert(stmt->havingClause == NULL);
 	Assert(stmt->usingIdClause == NULL);
+	Assert(stmt->usingBudgetClause == NULL);
 	Assert(stmt->windowClause == NIL);
 	Assert(stmt->op == SETOP_NONE);
 
