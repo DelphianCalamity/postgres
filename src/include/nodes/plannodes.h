@@ -47,6 +47,9 @@ typedef struct PlannedStmt
 
 	uint64		queryId;		/* query identifier (copied from Query) */
 
+	int 		privacyBudget;
+	int 		customQueryId;
+
 	bool		hasReturning;	/* is it insert|update|delete RETURNING? */
 
 	bool		hasModifyingCTE;	/* has insert|update|delete in WITH? */
