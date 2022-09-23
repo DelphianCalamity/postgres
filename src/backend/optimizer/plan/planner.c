@@ -505,6 +505,7 @@ standard_planner(Query *parse, const char *query_string, int cursorOptions,
 
 	result->commandType = parse->commandType;
 	result->queryId = parse->queryId;
+	result->privacyBudget = parse->privacyBudget;
 	result->customQueryId = parse->customQueryId;
 	result->hasReturning = (parse->returningList != NIL);
 	result->hasModifyingCTE = parse->hasModifyingCTE;

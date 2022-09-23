@@ -3726,6 +3726,8 @@ raw_expression_tree_walker(Node *node,
 					return true;
 				if (walker(stmt->rarg, context))
 					return true;
+				if (walker(stmt->usingBudgetClause, context))
+					return true;
 				if (walker(stmt->usingIdClause, context))
 					return true;
 			}
